@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @unique @default(autoincrement())
+  email    String @unique
+  name     String
+  profilePicture String?
+  password String
+  friends User[] @relation("friends")
+  friendsOf User[] @relation("friends")
+  sendRequests FriendRequest[] @relation("send")
+  recieveRequests FriendRequest[] @relation("recieve")
+  messages Message[] @relation("sentMessages")
+  recievedMessages Message[] @relation("receivedMessages")
+}
+
+model FriendRequest { 
+  id Int @id @unique @default(autoincrement())
+  time DateTime? @default(now())
+  userID Int
+  SendingUser User @relation("send", fields: [userID], references: [id])
+  RecievingUserID Int
+  RecievingUser User @relation("recieve", fields: [RecievingUserID], references: [id])
+}
+
+model Message { 
+  id Int @id @default(autoincrement())
+  content String
+  time DateTime? @default(now())
+  author User @relation("sentMessages", fields: [authorID], references: [id])
+  authorID Int
+  recievingUser User @relation("receivedMessages", fields: [recievingUserID], references: [id])
+  recievingUserID Int
+  parentMessageID Int?
+  parentMessage Message? @relation("reply", fields: [parentMessageID], references: [id])
+  replyMessages Message[] @relation("reply")
+}
