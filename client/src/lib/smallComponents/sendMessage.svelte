@@ -20,6 +20,7 @@
             inputElement.value = '';
         
         getMessages()
+        parentMessage.set(null)
     }
 
     onMount(() => { 

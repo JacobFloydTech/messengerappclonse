@@ -10,6 +10,7 @@
     import SearchPeopleSVG from '$lib/smallComponents/searchPeopleSVG.svelte'
     import {friends, selecteduser, highlight} from '../store';
 	import FriendRequestsMobile from '$lib/friendRequestsMobile.svelte';
+    import Cookies from 'js-cookie';
 
     export let data: PageData;
     let addFriends: HTMLDialogElement, showRequests: HTMLDialogElement;
@@ -36,6 +37,7 @@
         }
     }
 
+
     onMount(() => { 
         getFriends()
         document.addEventListener('keydown', checkPress)
@@ -49,16 +51,19 @@
 <div>
     
     <div class="md:grid-cols-[10%_30%_60%] grid-cols-[25%_75%] grid absolute top-0 left-0 w-full md:mt-0 md:px-12 md:h-full h-[90%] ">
-        <div class="md:flex flex-col justify-between py-4 hidden">
+        <div class="md:flex flex-col my-4 justify-between hidden">
             <button on:click={Home}>
                 <HomeSvg/>
             </button>
-        <div class="flex space-y-4 flex-col">
+            <div class="flex space-y-4 flex-col items-start float-left w-full">
                 <button  on:click={Requests} class="p-2">
                     <AddFriendSVG/>
                 </button>
                 <button on:click={Search} class="p-2">
                     <SearchPeopleSVG/>
+                </button>
+                <button on:click={() => {Cookies.remove("token"); window.location.href='/'}}>
+                    Sign out
                 </button>
             </div>
         </div>

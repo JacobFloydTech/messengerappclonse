@@ -3,6 +3,7 @@
     let password: string 
     let error: string | null = null;
     import Cookies from 'js-cookie'
+	import { onMount } from 'svelte';
     function handleEmail(e: Event) { 
         if (e.target instanceof HTMLInputElement) { 
             var target = e.target as HTMLInputElement;
@@ -31,6 +32,13 @@
             window.location.href ='/'
         }
     }
+    onMount(() => { 
+        document.addEventListener('keydown', ({code}) => { 
+            if (code == "Enter") { 
+                auth();
+            }
+        })
+    })
 </script>
 
 
